@@ -1,0 +1,128 @@
+/* Projects Section */
+.mp-section {
+    padding-top: 4vh;
+    margin: 0 10rem;
+    box-sizing: border-box;
+    min-height: fit-content;
+    text-align: center;
+  }
+  
+  .mp-section__text__p1 {
+    color: rgb(85, 85, 85);
+    font-weight: 600;
+  }
+  
+  .mp-title {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+  }
+  
+  .mp-experience-details-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .mp-about-containers {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .mp-details-container {
+    padding: 1.5rem;
+    background: rgb(250, 250, 250);
+    border-radius: 2rem;
+    border: 1px solid rgb(163, 163, 163);
+    text-align: center;
+    width: 300px;
+  }
+  
+  .mp-project-img {
+    border-radius: 2rem;
+    width: 100%;
+    height: auto;
+  }
+  
+  .mp-project-title {
+    margin: 1rem 0;
+    color: black;
+    font-size: 1.5rem;
+  }
+  
+  .mp-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .mp-btn {
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    border: 1px solid rgb(53, 53, 53);
+    background: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .mp-btn:hover {
+    background: rgb(53, 53, 53);
+    color: white;
+  }
+  
+  .mp-icon {
+    cursor: pointer;
+    height: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.project-card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.project-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.project-card h2 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button-group a {
+  text-decoration: none;
+  background-color: #333;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.button-group a:hover {
+  background-color: #555;
+}

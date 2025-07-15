@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Travel Planner</title>
+  <link rel="stylesheet" href="c2.css" />
+</head>
+<body>
+  <header>
+    <h1 >🌏 Smart Travel Planner</h1>
+    <p id="location">Detecting your location...</p>
+    <label for="destination">Choose Destination:</label>
+    <select id="destination">
+      <option value="goa">Goa</option>
+      <option value="karnataka">Karnataka</option>
+      <option value="kerala">Kerala</option>
+      <option value="odisha">Odisha</option>
+    </select>
+    <h3 style="color:black; background-color: aliceblue; border-radius: 10px;" id="network-status">Checking network...</h3>
+  </header>
+
+  <section class="transport-section">
+    <h2 style="color:black; background-color: rgb(248, 255, 240); border-radius: 10px;">🚍 Travel Options</h2>
+    <div class="cards">
+      <div class="card observer">
+        <img src="car.png" alt="Car">
+        <h3>By Car</h3>
+        <p id="car-distance">Calculating...</p>
+        <p id="car-cost"></p>
+      </div>
+      <div class="card observer">
+        <img src="bus.png" alt="Bus">
+        <h3>By Bus</h3>
+        <p id="bus-distance">Calculating...</p>
+        <p id="bus-cost"></p>
+      </div>
+      <div class="card observer">
+        <img src="train.png" alt="Train">
+        <h3>By Train</h3>
+        <p id="train-distance">Calculating...</p>
+        <p id="train-cost"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="weather-map">
+    <h1 style="color:black; background-color: aliceblue; border-radius: 10px;">🌤️ Weather Info</h1>
+    <h3 style="color: white;  border-radius: 10px;" id="weather">Loading...</h3>
+    <iframe id="map" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+  </section>
+
+  <script src="j2.js"></script>
+</body>
+</html>

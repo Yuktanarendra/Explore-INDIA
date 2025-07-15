@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Tourist Guide</title>
+    <link rel="stylesheet" href="stylee.css">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        scroll-behavior: smooth;
+       
+        background-image: linear-gradient(
+            rgba(80, 78, 78, 0.6),
+            rgba(66, 65, 65, 0.6)
+          ),url("ke.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+      }
+
+      nav {
+        background-color: #004d40;
+        padding: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+      }
+
+      .landing {
+        height: 100vh;
+        background: linear-gradient(
+            rgba(80, 78, 78, 0.6),
+            rgba(66, 65, 65, 0.6)
+          ),
+          url("hero-banner.jpg") no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: white;
+        text-shadow: 1px 1px 3px #000;
+      }
+
+      .landing button {
+        margin-top: 2rem;
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        border: none;
+        background-color: #00796b;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      section {
+        padding: 3rem 2rem;
+        max-width: 900px;
+        margin: auto;
+        position: relative;
+      }
+
+      section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url("k.png");
+        background-size: cover;
+        background-position: center;
+        opacity: 0.1;
+        z-index: -1;
+      }
+
+      section h2 {
+        text-align: center;
+        color: #004d40;
+        margin-bottom: 1.5rem;
+      }
+
+      .box {
+        background: white;
+        border-radius: 12px;
+        padding: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 2rem;
+        position: relative;
+        z-index: 1;
+      }
+
+      #network-status {
+        text-align: center;
+        background: #fdd835;
+        font-weight: bold;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border-radius: 6px;
+      }
+
+      #location-info {
+        padding: 1rem;
+        background: #fff8e1;
+        border-left: 5px solid #ff9800;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+      }
+
+      #mapCanvas {
+        border: 2px dashed #00796b;
+        border-radius: 8px;
+        display: block;
+        margin: 1rem auto;
+      }
+
+      .state-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .state-buttons button {
+        padding: 0.6rem;
+        background: #00897b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition:  0.3s ease;
+      }
+
+      .state-buttons button:hover {
+        background: #004d40;
+      }
+
+      #places-list ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      #places-list li {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 1rem;
+      }
+
+      form input,
+      form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1rem;
+      }
+
+      form button {
+        padding: 0.75rem 1.2rem;
+        background: #004d40;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+
+      #where-btn {
+        position: fixed;
+        bottom: 20px;
+        background: #566ac7;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+      #net-btn {
+        position: fixed;
+        bottom: 80px;
+
+        background: #566ac7;
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      #where-btn {
+        right: 20px;
+      }
+
+      #net-btn {
+        right: 150px;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .gallery-item {
+        width: 100%;
+        height: 150px;
+        border: 2px dashed #ccc;
+        border-radius: 8px;
+        overflow: hidden;
+        position: relative;
+        background-color: #fafafa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .gallery-item input {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="landing" id="landing">
+      <h1>Smart Tourist Guide</h1>
+      <button onclick="document.getElementById('main').scrollIntoView()">
+        Explore
+      </button>
+    </div>
+
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#about">About Us</a>
+      
+      <a href="#Gallary">Gallary</a>
+      <a href="#trips"> Upcoming trips</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div id="main">
+      <section id="home">
+        <div class="box">
+          <h2>Welcome to Smart Tourist Guide</h2>
+          <p style="text-align: center">
+            Discover India's most beautiful places based on your location. <br> <br>
+             Welcome! We’re truly delighted to have you here and extend our warmest greetings as you embark on this exciting new chapter with us. Whether you're joining us as a visitor, participant, team member, or collaborator, know that your presence brings immense value to our journey. This is a space where innovation meets inspiration, and where every individual is encouraged to bring their unique talents, ideas, and energy to the forefront. <br> <br>
+
+Here, we believe in building a vibrant and supportive environment—one that fosters learning, creativity, and meaningful connections. From day one, you’ll find yourself surrounded by people who are passionate, driven, and always willing to lend a helping hand. Our mission is not just to grow as individuals, but to uplift one another and create something greater together. As you explore everything we have to offer, we encourage you to ask questions, share your thoughts, and immerse yourself in the experience. <br> <br>
+
+This is more than just a platform or a community—it’s a place where goals are achieved, friendships are formed, and dreams are realized. So take a deep breath, step in with confidence, and get ready to discover a world of opportunities. Once again, welcome—we’re excited for the journey ahead and can’t wait to see the incredible things we’ll accomplish together! 
+          </p>
+        </div>
+      </section>
+
+      <section id="about">
+        <div class="box">
+          <h2>About Us</h2>
+          <p style="text-align: center">
+           At our core, we are a passionate team driven by a shared vision—to create meaningful experiences, inspire innovation, and build a community that thrives on creativity, connection, and collaboration. Whether you're here to learn, explore, contribute, or grow, we aim to provide a space where ideas can flourish and everyone feels valued. Our journey began with a simple belief: that technology, knowledge, and people together can make a positive impact. Over time, that belief has grown into a vibrant platform where curious minds meet purpose, and where possibilities are endless. With every step forward, we remain committed to quality, inclusivity, and continuous improvement—because your journey is our journey, too. <br> <br>
+
+We don’t just build products or services—we build experiences rooted in trust, transparency, and purpose. Our team brings together individuals from diverse backgrounds, united by their passion for solving real-world problems and crafting user-centric solutions. Every decision we make is guided by our values: integrity, innovation, empathy, and excellence. From brainstorming ideas to launching solutions, we prioritize people—because we know that behind every click, every project, and every success story, there’s a human connection that matters. <br> <br>
+
+Looking ahead, we’re excited to continue evolving, learning, and growing alongside our community. We believe the future belongs to those who dare to dream and do, and we’re here to empower you every step of the way. Whether you’re a first-time visitor or a long-time supporter, thank you for being a part of our story. Together, let’s keep pushing boundaries, making a difference, and creating something truly remarkable. <br> <br>
+          </p>
+        </div>
+      </section>
+
+     
+
+      <section id="Gallary">
+        <div class="box">
+          <h2>Gallery Upload</h2>
+          <div class="gallery">
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 0)"
+              />
+              <img id="gallery-img-0" src="k.png" alt="Image 1" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 1)"
+              />
+              <img id="gallery-img-1" src="g.png" alt="Image 2" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 2)"
+              />
+              <img id="gallery-img-2" src="ke.png" alt="Image 3" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 3)"
+              />
+              <img id="gallery-img-3" src="T.png" alt="Image 4" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 4)"
+              />
+              <img id="gallery-img-4" src="O.png" alt="Image 5" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 5)"
+              />
+              <img id="gallery-img-5" src="gg.png" alt="Image 6" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 6)"
+              />
+              <img id="gallery-img-6" src="m.png" alt="Image 7" />
+            </label>
+            <label class="gallery-item">
+              <input
+                type="file"
+                accept="image/*"
+                onchange="previewImage(event, 7)"
+              />
+              <img id="gallery-img-7" src="mh.png" alt="Image 8" />
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section id="Gallary">
+        
+          <h2 style="color: white;">Upcoming Tours</h2>
+
+          <section id="trips" class="py-12 px-6 text-center max-w-6xl mx-auto">
+
+  
+  <div class="project-grid">
+    <!-- Project Card -->
+    <div class="project-card">
+      <img src="k.png" alt="Project 1">
+      <h2>Karnataka (28-07-24)</h2>
+      <div class="button-group">
+        <a href="i2.html">Check</a>
+        
+      </div>
+    </div>
+
+    <!-- You can repeat the block below for each project -->
+    <div class="project-card">
+      <img src="ke.png" alt="Project 2">
+      <h2>Keral (30-07-24)</h2>
+      <div class="button-group">
+        <a href="i2.html">Check</a>
+        
+      </div>
+    </div>
+<!-- Project Card -->
+    <div class="project-card">
+      <img src="g.png" alt="Project 1">
+      <h2>Goa (1-08-24)</h2>
+      <div class="button-group">
+        <a href="i2.html">Check</a>
+       
+      </div>
+    </div>
+
+    <!-- You can repeat the block below for each project -->
+    <div class="project-card">
+      <img src="O.png" alt="Project 2">
+      <h2>Odisa (22-08-24)</h2>
+      <div class="button-group">
+        <a href="i2.html">Check</a>
+       
+      </div>
+    </div>
+
+    <!-- Add more project cards as needed -->
+  </div>
+
+
+  
+  
+    
+        
+      </section>
+    </div>
+    
+     <section id="contact">
+        <div class="box">
+          <h2>Contact</h2>
+          <form>
+            <input type="text" placeholder="Your Name" required />
+            <input type="email" placeholder="Your Email" required />
+            <textarea rows="4" placeholder="Your Message"></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+    <a href="loc.html"> <button id="where-btn">📍 Where am I?</button> </a>
+
+    <script>
+      function previewImage(event, index) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          document.getElementById("gallery-img-" + index).src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+      }
+    </script>
+  </body>
+</html>

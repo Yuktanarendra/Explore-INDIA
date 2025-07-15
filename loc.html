@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Geolocation with Address</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-image: url("hero-banner.jpg");
+        background-size: cover; /* scale image to cover screen */
+        background-position: center; /* center the image */
+        background-repeat: no-repeat;
+        text-align: center;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #ededf1;
+        font-size: 80px;
+      }
+
+      button {
+        background-color: #28a745;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 20px;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      #output {
+        margin-top: 25px;
+        padding: 20px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        width: 90%;
+        max-width: 600px;
+        font-size: 16px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>📍Geolocation </h1>
+    <button onclick="getLocation()">Get My Location</button>
+
+    <div id="output">Click the button to find your location...</div>
+
+    <script>
+      const output = document.getElementById("output");
+
+      async function getLocation() {
+        if (!navigator.geolocation) {
+          output.innerHTML = "❌ Geolocation is not supported by your browser.";
+          return;
+        }
+
+        output.innerHTML = "⏳ Getting coordinates...";
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+
+            output.innerHTML = `
+          📍 Latitude: ${lat}<br>
+          📍 Longitude: ${lon}<br>
+          ⏳ Looking up address...`;
+
+            const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`;
+
+            try {
+              const res = await fetch(url);
+              const data = await res.json();
+
+              const address = data.address || {};
+              const fullAddress = data.display_name || "N/A";
+
+              const country = address.country || "N/A";
+              const state = address.state || address.county || "N/A";
+              const city =
+                address.city || address.town || address.village || "N/A";
+              const pincode = address.postcode || "N/A";
+
+              output.innerHTML = `
+            ✅ <strong>Address Found:</strong><br><br>
+            <strong>Country:</strong> ${country}<br>
+            <strong>State:</strong> ${state}<br>
+            <strong>City:</strong> ${city}<br>
+            <strong>Pincode:</strong> ${pincode}<br><br>
+            <strong>Full Address:</strong><br>${fullAddress}<br><br>
+            <a href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}" target="_blank">
+              🌐 View on OpenStreetMap
+            </a>
+          `;
+            } catch (err) {
+              output.innerHTML =
+                "❌ Failed to fetch address from OpenStreetMap.";
+            }
+          },
+          (err) => {
+            output.innerHTML = `❌ Error: ${err.message}`;
+          }
+        );
+      }
+    </script>
+  </body>
+</html>
